@@ -1,39 +1,45 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
-import reactLogo from './assets/react.svg'
+import GoogleMapComponent from './components/maps/GoogleMap'
+import { defaultCenter, mapApiKey } from './utils/map-center'
+
 import './App.css'
-import viteLogo from '/vite.svg'
+
+// Replace with your actual Google Maps API key
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [markers, setMarkers] = useState<google.maps.LatLngLiteral[]>([defaultCenter])
 
-  const a = count === 1
-    ? 'a'
-    : 'default'
+  const handleMapClick = (event: google.maps.MapMouseEvent) => {
+    if (event.latLng) {
+      const newMarker = {
+        lat: event.latLng.lat(),
+        lng: event.latLng.lng(),
+      }
+      setMarkers([newMarker])
+    }
+  }
+
+  useEffect(() => {
+    if (!navigator?.geolocation?.getCurrentPosition) return
+    navigator.geolocation.getCurrentPosition((pos) => {
+      setMarkers([{
+        lat: pos.coords.latitude,
+        lng: pos.coords.longitude,
+      }])
+    })
+  }, [])
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank" rel="noreferrer noopener">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank" rel="noreferrer noopener">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button type="button" onClick={() => setCount(count => count + 1)}>
-          count is    {a}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div className="h-screen w-screen   bg-gray-50">
+      <GoogleMapComponent
+        apiKey={mapApiKey}
+        center={defaultCenter}
+        zoom={17}
+        markers={markers}
+        onMapClick={handleMapClick}
+      />
+    </div>
   )
 }
 
