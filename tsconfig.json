@@ -3,9 +3,9 @@
     "baseUrl": ".",
     "paths": {
       "@/*": [
-        "template/src/*"
+        "./src/*"
       ]
-    }
+    },
   },
   "references": [
     {

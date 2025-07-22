@@ -56,5 +56,4 @@ function Button({
   )
 }
 
-export { buttonVariants }
-export default Button
+export { Button, buttonVariants }

@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
 
-import GoogleMapComponent from './components/maps/GoogleMap'
-import { defaultCenter, mapApiKey } from './utils/map-center'
+import { MenuSidebar } from './layouts/menu-sidebar'
+import GoogleMapComponent from '@/components/maps/GoogleMap'
+import { SidebarProvider } from '@/components/ui/sidebar'
+import { defaultCenter, mapApiKey } from '@/utils/map-center'
 
 import './App.css'
 
@@ -31,15 +33,20 @@ function App() {
   }, [])
 
   return (
-    <div className="h-screen w-screen   bg-gray-50">
-      <GoogleMapComponent
-        apiKey={mapApiKey}
-        center={defaultCenter}
-        zoom={17}
-        markers={markers}
-        onMapClick={handleMapClick}
-      />
-    </div>
+    <SidebarProvider>
+      <div className="flex size-full bg-white/1 rounded overflow-hidden">
+        <MenuSidebar />
+        <main className="size-full">
+          <GoogleMapComponent
+            apiKey={mapApiKey}
+            center={defaultCenter}
+            zoom={17}
+            markers={markers}
+            onMapClick={handleMapClick}
+          />
+        </main>
+      </div>
+    </SidebarProvider>
   )
 }
 
