@@ -1,4 +1,4 @@
-import { Calendar, Home, Inbox, Search, Settings } from 'lucide-react'
+import { Map } from 'lucide-react'
 
 import {
   Sidebar,
@@ -13,9 +13,9 @@ import {
 // Menu items.
 const items = [
   {
-    title: 'Home',
+    title: 'Map',
     url: '/',
-    icon: Home,
+    icon: Map,
   },
 ]
 
@@ -26,13 +26,14 @@ export function MenuSidebar() {
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
+
               {items.map(item => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url}>
+                    <button onClick={() => console.log('click')}>
                       <item.icon />
                       <span>{item.title}</span>
-                    </a>
+                    </button>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}

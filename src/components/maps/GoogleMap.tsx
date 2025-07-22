@@ -40,7 +40,7 @@ function GoogleMapComponent({
       <LoadScript googleMapsApiKey={apiKey}>
         <GoogleMap
           mapContainerStyle={{ ...style }}
-          mapContainerClassName={cn('size-full', className)}
+          mapContainerClassName={cn('size-full rounded', className)}
           zoom={zoom}
           onLoad={onLoad}
           onUnmount={onUnmount}

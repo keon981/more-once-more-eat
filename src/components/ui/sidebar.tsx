@@ -35,10 +35,10 @@ const SIDEBAR_KEYBOARD_SHORTCUT = 'b'
 interface SidebarContextProps {
   state: 'expanded' | 'collapsed'
   open: boolean
-  setOpen: (open: boolean) => void
   openMobile: boolean
-  setOpenMobile: (open: boolean) => void
   isMobile: boolean
+  setOpen: (open: boolean) => void
+  setOpenMobile: (open: boolean) => void
   toggleSidebar: () => void
 }
 
@@ -154,7 +154,7 @@ function SidebarProvider({
 function Sidebar({
   side = 'left',
   variant = 'sidebar',
-  collapsible = 'offcanvas',
+  collapsible = 'icon',
   className,
   children,
   ...props
@@ -244,7 +244,7 @@ function Sidebar({
         <div
           data-sidebar="sidebar"
           data-slot="sidebar-inner"
-          className=" border border-accent bg-white/75 group-data-[variant=floating]:border-sidebar-border flex h-full w-full flex-col group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:shadow-sm"
+          className=" border border-accent rounded bg-white/30 group-data-[variant=floating]:border-sidebar-border flex h-full w-full flex-col group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:shadow-sm"
         >
           {children}
         </div>
