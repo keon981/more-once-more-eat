@@ -6,8 +6,8 @@ import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
 import { defaultCenter, mapApiKey } from '@/utils/map-center'
 
 import './App.css'
-
-// Replace with your actual Google Maps API key
+import { Tabs, TabsContent, TabsList, TabsTrigger } from './components/ui/tabs'
+import { Map } from 'lucide-react'
 
 function App() {
   const [markers, setMarkers] = useState<google.maps.LatLngLiteral[]>([defaultCenter])
@@ -36,17 +36,27 @@ function App() {
     <SidebarProvider>
       <div className="flex size-full gap-2 rounded overflow-hidden">
         <MenuSidebar />
-        <main className="size-full p-2 flex flex-col gap-1 rounded border border-white bg-white/20">
-          <nav className="flex items-center p-1 bg-white/20 rounded">
+        <main className="size-full flex flex-col gap-2 rounded">
+          <nav className="items-center p-1  rounded bg-glassmorphism">
             <SidebarTrigger />
           </nav>
-          <GoogleMapComponent
-            apiKey={mapApiKey}
-            center={defaultCenter}
-            zoom={17}
-            markers={markers}
-            onMapClick={handleMapClick}
-          />
+
+          <Tabs defaultValue="map" className="relative size-full">
+            <TabsList className='absolute py-6 px-2 bottom-14 left-1/2 -translate-x-1/2 z-30 bg-glassmorphism'>
+              <TabsTrigger value="map" className=' p-5'><Map></Map> Map</TabsTrigger>
+              <TabsTrigger value="password" className=' p-5'>Password</TabsTrigger>
+            </TabsList>
+            <TabsContent value="map" className="size-full p-1 rounded bg-glassmorphism">
+              <GoogleMapComponent
+                apiKey={mapApiKey}
+                center={defaultCenter}
+                zoom={17}
+                markers={markers}
+                onMapClick={handleMapClick}
+              />
+            </TabsContent>
+            <TabsContent value="password">Change your password here.</TabsContent>
+          </Tabs>
         </main>
       </div>
     </SidebarProvider>

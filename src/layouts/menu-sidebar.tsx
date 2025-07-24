@@ -30,7 +30,10 @@ export function MenuSidebar() {
               {items.map(item => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <button onClick={() => console.log('click')}>
+                    <button
+                      type="button"
+                      onClick={() => console.log('click')}
+                    >
                       <item.icon />
                       <span>{item.title}</span>
                     </button>

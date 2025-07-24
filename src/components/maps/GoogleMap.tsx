@@ -36,26 +36,24 @@ function GoogleMapComponent({
   }, [])
 
   return (
-    <>
-      <LoadScript googleMapsApiKey={apiKey}>
-        <GoogleMap
-          mapContainerStyle={{ ...style }}
-          mapContainerClassName={cn('size-full rounded', className)}
-          zoom={zoom}
-          onLoad={onLoad}
-          onUnmount={onUnmount}
-          onClick={onMapClick}
-          {...props}
-        >
-          {markers.map(marker => (
-            <Marker
-              key={`${marker.lat}-${marker.lng}`}
-              position={marker}
-            />
-          ))}
-        </GoogleMap>
-      </LoadScript>
-    </>
+    <LoadScript googleMapsApiKey={apiKey}>
+      <GoogleMap
+        mapContainerStyle={{ ...style }}
+        mapContainerClassName={cn('size-full rounded', className)}
+        zoom={zoom}
+        onLoad={onLoad}
+        onUnmount={onUnmount}
+        onClick={onMapClick}
+        {...props}
+      >
+        {markers.map(marker => (
+          <Marker
+            key={`${marker.lat}-${marker.lng}`}
+            position={marker}
+          />
+        ))}
+      </GoogleMap>
+    </LoadScript>
   )
 }
 

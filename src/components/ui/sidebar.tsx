@@ -207,7 +207,7 @@ function Sidebar({
 
   return (
     <aside
-      className="group peer text-sidebar-foreground hidden md:block"
+      className="relative group peer text-sidebar-foreground hidden md:block"
       data-state={state}
       data-collapsible={state === 'collapsed' ? collapsible : ''}
       data-variant={variant}
@@ -273,7 +273,7 @@ function SidebarTrigger({
       }}
       {...props}
     >
-      <PanelLeftIcon />
+      <PanelLeftIcon height={'1em'} width={'1em'} />
       <span className="sr-only">Toggle Sidebar</span>
     </Button>
   )

@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -141,6 +141,38 @@
   }
   body {
     @apply text-foreground;
-    background: linear-gradient(135deg, #2a2a72 0%, #009ffd 74%);
+    /* @apply  bg-gradient-to-b from-[#6366f1] via-[#a5b4fc] to-[#e0e7ff]; */
+    /* background-color: #074173;
+    background-image: radial-gradient(at 39% 17%, #074173 0%, transparent 60%), radial-gradient(at 94% 39%, #1679ab 0%, transparent 50%), radial-gradient(at 20% 81%, #5debd7 0%, transparent 40%), radial-gradient(at 14% 55%, #c5ff95 0%, transparent 30%); */
+    background:
+      radial-gradient(at 78% 44%, #42cfed 0px, transparent 50%),
+      radial-gradient(at 85% 75%, #e37cd7 0px, transparent 50%),
+      radial-gradient(at 11% 79%, #2c7989 0px, transparent 50%),
+      radial-gradient(at 19% 91%, #674dd4 0px, transparent 50%),
+      radial-gradient(at 7% 87%, #5c3150 0px, transparent 50%),
+      radial-gradient(at 15% 59%, #101010 0px, transparent 50%), #42cfed;
+  }
+}
+
+@layer components {
+  .bg-glassmorphism {
+    @apply relative z-10 border border-white;
+    &:before {
+      content: '';
+      @apply absolute z-0 top-0 left-0 size-full -inset-2 rounded-lg bg-gradient-to-br from-cyan-600 via-emerald-600 to-stone-600 opacity-50 blur-2xl pointer-events-none;
+    }
+    &:after {
+      content: '';
+      @apply absolute z-0 top-0 left-0 size-full bg-white bg-clip-padding opacity-20 pointer-events-none;
+      backdrop-filter: blur(12px) saturate(150%) contrast(125%);
+    }
+  }
+
+  .glass-container {
+  }
+
+  .glass-overlay {
+    z-index: 2;
+    background: var(--bg-color);
   }
 }
