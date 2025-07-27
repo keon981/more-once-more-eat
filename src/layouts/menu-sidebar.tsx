@@ -1,46 +1,56 @@
-import { Map } from 'lucide-react'
+import { useRef } from 'react'
 
+import { Autocomplete } from '@react-google-maps/api'
+
+import { Input } from '@/components/ui/input'
 import {
   Sidebar,
   SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
 } from '@/components/ui/sidebar'
+import { useMapStore } from '@/stores/map-store'
 
-// Menu items.
-const items = [
-  {
-    title: 'Map',
-    url: '/',
-    icon: Map,
-  },
-]
+const distance = 0.01
 
 export function MenuSidebar() {
+  const { center, setCenter, addMarker } = useMapStore()
+  const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null)
+
+  const handlePlaceChanged = (): void => {
+    if (autocompleteRef.current) {
+      const place = autocompleteRef.current.getPlace()
+      if (!place || !place.geometry?.location) return
+
+      const location = {
+        lat: place.geometry?.location.lat(),
+        lng: place.geometry?.location.lng(),
+      }
+      setCenter(location)
+      addMarker(location)
+    }
+  }
+
   return (
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>
-            <SidebarMenu>
-
-              {items.map(item => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <button
-                      type="button"
-                      onClick={() => console.log('click')}
-                    >
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </button>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
+            <Autocomplete
+              onLoad={(autocomplete) => {
+                autocompleteRef.current = autocomplete
+              }}
+              types={['restaurant', 'food']}
+              bounds={{
+                east: center.lng + distance,
+                west: center.lng - distance,
+                north: center.lat + distance,
+                south: center.lat - distance,
+              }}
+              onPlaceChanged={handlePlaceChanged}
+            >
+              <Input />
+            </Autocomplete>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>

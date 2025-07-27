@@ -20,7 +20,7 @@ export default defineConfig({
   },
   test: {
     globals: true,
-    environment: 'jsdom',
+    environment: 'node',
     includeSource: ['src/__tests__/*.{js,tsx,ts}'],
     setupFiles: 'src/__tests__/setup.ts',
     coverage: {

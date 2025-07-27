@@ -1,12 +1,11 @@
 import { useCallback, useState } from 'react'
 
 import type { GoogleMapProps } from '@react-google-maps/api'
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api'
+import { GoogleMap, Marker } from '@react-google-maps/api'
 
 import { cn } from '@/lib/utils'
 
 interface Props extends GoogleMapProps {
-  apiKey: string
   center?: google.maps.LatLngLiteral
   zoom?: number
   markers?: google.maps.LatLngLiteral[]
@@ -16,7 +15,6 @@ interface Props extends GoogleMapProps {
 }
 
 function GoogleMapComponent({
-  apiKey,
   zoom = 10,
   markers = [],
   style,
@@ -36,24 +34,22 @@ function GoogleMapComponent({
   }, [])
 
   return (
-    <LoadScript googleMapsApiKey={apiKey}>
-      <GoogleMap
-        mapContainerStyle={{ ...style }}
-        mapContainerClassName={cn('size-full rounded', className)}
-        zoom={zoom}
-        onLoad={onLoad}
-        onUnmount={onUnmount}
-        onClick={onMapClick}
-        {...props}
-      >
-        {markers.map(marker => (
-          <Marker
-            key={`${marker.lat}-${marker.lng}`}
-            position={marker}
-          />
-        ))}
-      </GoogleMap>
-    </LoadScript>
+    <GoogleMap
+      mapContainerStyle={{ ...style }}
+      mapContainerClassName={cn('size-full rounded', className)}
+      zoom={zoom}
+      onLoad={onLoad}
+      onUnmount={onUnmount}
+      onClick={onMapClick}
+      {...props}
+    >
+      {markers.map((marker, index) => (
+        <Marker
+          key={`marker-${marker.lat}-${marker.lng}-${index}`}
+          position={marker}
+        />
+      ))}
+    </GoogleMap>
   )
 }
 
