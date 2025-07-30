@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 
-import { Autocomplete } from '@react-google-maps/api'
+// import { Autocomplete } from '@vis.gl/react-google-maps'
 
 import { Input } from '@/components/ui/input'
 import {
@@ -36,7 +36,7 @@ export function MenuSidebar() {
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>
-            <Autocomplete
+            {/* <Autocomplete
               onLoad={(autocomplete) => {
                 autocompleteRef.current = autocomplete
               }}
@@ -50,7 +50,7 @@ export function MenuSidebar() {
               onPlaceChanged={handlePlaceChanged}
             >
               <Input />
-            </Autocomplete>
+            </Autocomplete> */}
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>

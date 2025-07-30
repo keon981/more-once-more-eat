@@ -1,50 +1,40 @@
-import { useCallback, useState } from 'react'
-
-import type { GoogleMapProps } from '@react-google-maps/api'
-import { GoogleMap, Marker } from '@react-google-maps/api'
+import { AdvancedMarker, Map as GoogleMap, useMapsLibrary } from '@vis.gl/react-google-maps'
+import type { MapMouseEvent, MapProps } from '@vis.gl/react-google-maps'
 
 import { cn } from '@/lib/utils'
+import { useMapStore } from '@/stores/map-store'
 
-interface Props extends GoogleMapProps {
-  center?: google.maps.LatLngLiteral
+interface Props extends MapProps {
   zoom?: number
-  markers?: google.maps.LatLngLiteral[]
-  style?: React.CSSProperties
   className?: string
-  onMapClick?: (event: google.maps.MapMouseEvent) => void
 }
 
 function GoogleMapComponent({
-  zoom = 10,
-  markers = [],
-  style,
   className,
-  onMapClick,
   ...props
 }: Props) {
-  const [map, setMap] = useState<google.maps.Map | null>(null)
+  const { markers, addMarker } = useMapStore()
 
-  const onLoad = useCallback((map: google.maps.Map) => {
-    setMap(map)
-  }, [])
-
-  const onUnmount = useCallback(() => {
-    // 地圖卸載時的清理邏輯
-    setMap(null)
-  }, [])
+  const handleMapClick = (event: MapMouseEvent) => {
+    if (event.detail.latLng) {
+      addMarker(event.detail.latLng)
+    }
+  }
 
   return (
     <GoogleMap
-      mapContainerStyle={{ ...style }}
-      mapContainerClassName={cn('size-full rounded', className)}
-      zoom={zoom}
-      onLoad={onLoad}
-      onUnmount={onUnmount}
-      onClick={onMapClick}
+      mapId="google-map"
+      colorScheme="DARK"
+      renderingType="UNINITIALIZED"
+      defaultZoom={10}
+      className={cn('size-full rounded', className)}
+      gestureHandling="greedy"
+      onClick={handleMapClick}
+      reuseMaps
       {...props}
     >
       {markers.map((marker, index) => (
-        <Marker
+        <AdvancedMarker
           key={`marker-${marker.lat}-${marker.lng}-${index}`}
           position={marker}
         />
