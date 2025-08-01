@@ -54,7 +54,11 @@ function App() {
               <TabsContent value="map" className="size-full p-1 rounded bg-glassmorphism">
                 <GoogleMapComponent defaultCenter={center} defaultZoom={17} />
               </TabsContent>
-              <TabsContent value="turntable" className="size-full p-1 rounded bg-glassmorphism">Change your password here.</TabsContent>
+              <TabsContent value="turntable" className="size-full p-1 rounded bg-glassmorphism">
+                <Turntable
+                  onResult={option => console.log('選中了:', option.label)}
+                />
+              </TabsContent>
             </Tabs>
           </main>
         </div>
