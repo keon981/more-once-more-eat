@@ -1,4 +1,4 @@
-import { AdvancedMarker, Map as GoogleMap, useMapsLibrary } from '@vis.gl/react-google-maps'
+import { AdvancedMarker, Map as GoogleMap } from '@vis.gl/react-google-maps'
 import type { MapMouseEvent, MapProps } from '@vis.gl/react-google-maps'
 
 import { cn } from '@/lib/utils'

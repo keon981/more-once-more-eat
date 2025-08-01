@@ -1,12 +1,13 @@
 import { useEffect } from 'react'
 
-import { APIProvider } from '@vis.gl/react-google-maps'
+import { APIProvider as GoogleMapAPIProvider } from '@vis.gl/react-google-maps'
 import { Compass, Map as MapIcon } from 'lucide-react'
 
-import { LiquidGlassTabsList, Tabs, TabsContent, TabsTrigger } from './components/ui/tabs'
-import { MenuSidebar } from './layouts/menu-sidebar'
 import GoogleMapComponent from '@/components/maps/GoogleMap'
-import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
+import { PlaceSearchInput } from '@/components/maps/PlaceSearchInput'
+import Turntable from '@/components/Turntable'
+import { SidebarProvider } from '@/components/ui/sidebar'
+import { LiquidGlassTabsList, Tabs, TabsContent, TabsTrigger } from '@/components/ui/tabs'
 import { useMapStore } from '@/stores/map-store'
 import { mapApiKey } from '@/utils/map-center'
 
@@ -26,19 +27,19 @@ function App() {
   }, [])
 
   return (
-    <SidebarProvider>
-      <APIProvider
-        apiKey={mapApiKey}
-        libraries={['places']}
-        language="zh-TW"
-        region="TW"
-        onLoad={() => console.log('Google Maps API loaded')}
-      >
+    <GoogleMapAPIProvider
+      apiKey={mapApiKey}
+      libraries={['places']}
+      language="zh-TW"
+      region="TW"
+      onLoad={() => console.log('Google Maps API loaded')}
+    >
+      <SidebarProvider>
         <div className="flex w-screen max-h-screen h-full gap-2 rounded overflow-hidden">
-          <MenuSidebar />
+          {/* <MenuSidebar /> */}
           <main className="size-full flex flex-col gap-2 rounded">
-            <nav className="items-center p-1 rounded bg-glassmorphism">
-              <SidebarTrigger />
+            <nav className="z-100 items-center p-1 rounded bg-glassmorphism">
+              <PlaceSearchInput placeholder="搜尋餐廳、地點..." />
             </nav>
 
             <Tabs defaultValue="map" className="relative size-full">
@@ -57,8 +58,8 @@ function App() {
             </Tabs>
           </main>
         </div>
-      </APIProvider>
-    </SidebarProvider>
+      </SidebarProvider>
+    </GoogleMapAPIProvider>
   )
 }
 

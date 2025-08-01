@@ -35,7 +35,7 @@ export default antfu({
      * Supports Prettier and dprint
      * By default uses Prettier
      */
-    markdown: 'prettier'
+    markdown: 'prettier',
   },
   rules: {
     'react-refresh/only-export-components': 'off',
@@ -46,6 +46,7 @@ export default antfu({
     'no-console': 'warn',
     'no-nested-ternary': 'error',
     'antfu/if-newline': 'off',
+    'react-hooks/exhaustive-deps': 'off',
   },
 })
   .overrides({
