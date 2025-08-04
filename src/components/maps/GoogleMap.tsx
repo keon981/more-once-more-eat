@@ -27,15 +27,15 @@ function GoogleMapComponent({
       colorScheme="DARK"
       renderingType="UNINITIALIZED"
       defaultZoom={10}
-      className={cn('size-full rounded', className)}
+      className={cn('size-full rounded overflow-hidden', className)}
       gestureHandling="greedy"
       onClick={handleMapClick}
       reuseMaps
       {...props}
     >
-      {markers.map((marker, index) => (
+      {markers.map(marker => (
         <AdvancedMarker
-          key={`marker-${marker.lat}-${marker.lng}-${index}`}
+          key={`marker-${marker.lat}-${marker.lng}`}
           position={marker}
         />
       ))}

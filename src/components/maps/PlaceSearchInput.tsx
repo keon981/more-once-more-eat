@@ -219,10 +219,10 @@ export function PlaceSearchInput({
   const handlePopoverOpenChange = () => {}
 
   return (
-    <Command className={cn('relative w-full max-w-1/3', className)}>
+    <Command className={cn('relative w-1/3 min-w-60 bg-transparent', className)}>
       <Popover open={!!open} onOpenChange={handlePopoverOpenChange}>
         <PopoverTrigger asChild onClick={() => {}}>
-          <div className="relative min-w-96">
+          <div className="relative w-full">
             <SearchIcon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
               ref={inputRef}
@@ -230,7 +230,7 @@ export function PlaceSearchInput({
               onChange={handleInputChange}
               onKeyDown={handleKeyDown}
               placeholder={placeholder}
-              className="px-10 bg-indigo-100/50"
+              className="px-10 bg-transparent border-primary focus-visible:border-2"
             />
             {query && (
               <Button

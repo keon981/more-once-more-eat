@@ -1,4 +1,4 @@
-import { PlaceSearchInput } from '@/components/maps/PlaceSearchInput'
+import LiquidGlass from '@/components/ui/liquid-glass'
 import {
   Sidebar,
   SidebarContent,
@@ -6,18 +6,26 @@ import {
   SidebarGroupContent,
   SidebarGroupLabel,
 } from '@/components/ui/sidebar'
+import { useMapStore } from '@/stores/map-store'
 
 export function MenuSidebar() {
+  const { markers } = useMapStore()
   return (
     <Sidebar>
-      <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>搜尋地點</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <PlaceSearchInput placeholder="搜尋餐廳、美食..." />
-          </SidebarGroupContent>
-        </SidebarGroup>
-      </SidebarContent>
+      <LiquidGlass>
+        <SidebarContent>
+          <SidebarGroup>
+            <SidebarGroupContent>
+              {markers.map(marker => (
+                <SidebarGroupLabel key={`marker-${marker.lat}-${marker.lng}`}>
+                  {marker.lat}, {marker.lng}
+                </SidebarGroupLabel>
+              ))}
+            </SidebarGroupContent>
+          </SidebarGroup>
+        </SidebarContent>
+
+      </LiquidGlass>
     </Sidebar>
   )
 }
