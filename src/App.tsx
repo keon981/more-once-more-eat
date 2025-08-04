@@ -16,7 +16,7 @@ import { mapApiKey } from '@/utils/map-center'
 import './App.css'
 
 function App() {
-  const { center, setCenter } = useMapStore()
+  const { setCenter } = useMapStore()
 
   useEffect(() => {
     if (!navigator?.geolocation?.getCurrentPosition) return
@@ -45,7 +45,7 @@ function App() {
             <MenuSidebar />
             <main className="size-full flex flex-col gap-2 rounded">
               <nav className="flex gap-1 z-50 items-center p-1 rounded bg-glassmorphism">
-                <SidebarTrigger></SidebarTrigger>
+                <SidebarTrigger />
                 <PlaceSearchInput placeholder="搜尋餐廳、地點..." />
               </nav>
 
@@ -60,7 +60,7 @@ function App() {
                 </LiquidGlassTabsList>
                 <TabsContent value="map" className="size-full p-1 rounded bg-glassmorphism">
                   <LiquidGlass className="size-full">
-                    <GoogleMapComponent defaultCenter={center} defaultZoom={17} />
+                    <GoogleMapComponent />
                   </LiquidGlass>
                 </TabsContent>
                 <TabsContent value="turntable" className="size-full p-1 rounded bg-glassmorphism">

@@ -131,7 +131,8 @@
     @apply relative z-10 border border-white;
     &:before {
       content: '';
-      @apply absolute z-0 top-0 left-0 size-full -inset-2 rounded-lg bg-gradient-to-br from-cyan-600 via-emerald-600 to-stone-600 opacity-50 blur-2xl pointer-events-none;
+      @apply absolute z-0 top-0 left-0 size-full -inset-2 rounded-lg pointer-events-none;
+      /* @apply bg-gradient-to-br from-cyan-600 via-emerald-600 to-stone-600 opacity-50 blur-2xl; */
     }
     &:after {
       content: '';

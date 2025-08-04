@@ -2,14 +2,19 @@ import { create } from 'zustand'
 
 import { defaultCenter } from '@/utils/map-center'
 
+interface MarkerType extends google.maps.LatLngLiteral {
+  name?: string
+  message?: string
+}
+
 interface MapState {
   center: LocationType
-  markers: google.maps.LatLngLiteral[]
+  markers: MarkerType[]
   setCenter: (center: LocationType) => void
-  setMarkers: (markers: google.maps.LatLngLiteral[]) => void
-  setMarker: (marker: google.maps.LatLngLiteral) => void
-  addMarker: (marker: google.maps.LatLngLiteral) => void
-  addMarkers: (markers: google.maps.LatLngLiteral[]) => void
+  setMarkers: (markers: MarkerType[]) => void
+  setMarker: (marker: MarkerType) => void
+  addMarker: (marker: MarkerType) => void
+  addMarkers: (markers: MarkerType[]) => void
   clearMarkers: () => void
 }
 
@@ -23,3 +28,5 @@ export const useMapStore = create<MapState>(set => ({
   addMarkers: markers => set(state => ({ markers: [...state.markers, ...markers] })),
   clearMarkers: () => set({ markers: [] }),
 }))
+
+export type { MarkerType }

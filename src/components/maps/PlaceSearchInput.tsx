@@ -132,8 +132,11 @@ export function PlaceSearchInput({
             lng: place.location.lng(),
           }
 
-          setCenter(location)
-          addMarker(location)
+          addMarker({
+            ...location,
+            name: place.displayName || '未知地點',
+            message: place.formattedAddress || '搜尋結果',
+          })
 
           // 建立相容的 PlaceResult 物件
           const placeResult: google.maps.places.PlaceResult = {
@@ -149,12 +152,17 @@ export function PlaceSearchInput({
 
           setQuery(place.displayName || place.formattedAddress || '')
           setSelectedIndex(-1)
+          return {
+            ...location,
+            name: place.displayName || '未知地點',
+            message: place.formattedAddress || '搜尋結果',
+          }
         }
       } catch (error) {
         console.error('Error fetching place details:', error)
       }
     },
-    [places, setCenter, addMarker, onPlaceSelect],
+    [places],
   )
 
   // 處理輸入變化
@@ -190,8 +198,15 @@ export function PlaceSearchInput({
       case 'Enter':
         e.preventDefault()
         if (selectedIndex >= 0 && selectedIndex < predictions.length) {
-          getPlaceDetails(predictions[selectedIndex].place_id)
           setIsOpenPopover(false)
+          getPlaceDetails(predictions[selectedIndex].place_id)
+            .then((location) => {
+              if (!location) return
+              setCenter({
+                lat: location.lat,
+                lng: location.lng,
+              })
+            })
         }
         break
       case 'Escape':
@@ -205,6 +220,13 @@ export function PlaceSearchInput({
   // 處理地點選擇
   const handlePlaceSelect = (prediction: PlacePrediction) => {
     getPlaceDetails(prediction.place_id)
+      .then((location) => {
+        if (!location) return
+        setCenter({
+          lat: location.lat,
+          lng: location.lng,
+        })
+      })
     setIsOpenPopover(false)
   }
 

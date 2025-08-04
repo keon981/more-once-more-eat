@@ -18,7 +18,7 @@ export function MenuSidebar() {
             <SidebarGroupContent>
               {markers.map(marker => (
                 <SidebarGroupLabel key={`marker-${marker.lat}-${marker.lng}`}>
-                  {marker.lat}, {marker.lng}
+                  {marker.name}
                 </SidebarGroupLabel>
               ))}
             </SidebarGroupContent>
