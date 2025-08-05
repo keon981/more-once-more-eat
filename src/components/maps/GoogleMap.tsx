@@ -5,7 +5,6 @@ import { cn } from '@/lib/utils'
 import { useMapStore } from '@/stores/map-store'
 
 interface Props extends MapProps {
-  zoom?: number
   className?: string
 }
 
@@ -13,7 +12,7 @@ function GoogleMapComponent({
   className,
   ...props
 }: Props) {
-  const { center, markers, addMarker, setCenter } = useMapStore()
+  const { zoom, center, markers, addMarker, setCameraState } = useMapStore()
 
   const handleMapClick = (event: MapMouseEvent) => {
     if (event.detail.latLng) {
@@ -27,13 +26,16 @@ function GoogleMapComponent({
   }
 
   const handleCameraChanged = (event: MapCameraChangedEvent) => {
-    setCenter(event.detail.center)
+    setCameraState({
+      center: event.detail.center,
+      zoom: event.detail.zoom,
+    })
   }
 
   return (
     <GoogleMap
       center={center}
-      defaultZoom={17}
+      zoom={zoom}
       mapId="google-map"
       colorScheme="DARK"
       renderingType="UNINITIALIZED"
