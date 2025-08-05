@@ -5,7 +5,7 @@ import { Compass, Map as MapIcon } from 'lucide-react'
 
 import GoogleMapComponent from '@/components/maps/GoogleMap'
 import { PlaceSearchInput } from '@/components/maps/PlaceSearchInput'
-import Turntable from '@/components/Turntable'
+import Turntable from '@/components/turntable'
 import { SidebarProvider } from '@/components/ui/sidebar'
 import { LiquidGlassTabsList, Tabs, TabsContent, TabsTrigger } from '@/components/ui/tabs'
 import { useMapStore } from '@/stores/map-store'
@@ -32,7 +32,6 @@ function App() {
       libraries={['places']}
       language="zh-TW"
       region="TW"
-      onLoad={() => console.log('Google Maps API loaded')}
     >
       <SidebarProvider>
         <div className="flex w-screen max-h-screen h-full gap-2 rounded overflow-hidden">
