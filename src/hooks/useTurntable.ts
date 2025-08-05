@@ -1,9 +1,8 @@
-import { useState, useCallback } from 'react'
+import { useCallback, useState } from 'react'
 
 export interface TurntableOption {
   id: string
   label: string
-  color: string
 }
 
 export interface UseTurntableProps {
@@ -46,7 +45,7 @@ export function useTurntable({ options, onResult }: UseTurntableProps) {
 
   const reset = useCallback(() => {
     if (isSpinning) return
-    
+
     setRotation(0)
     setResult(null)
   }, [isSpinning])

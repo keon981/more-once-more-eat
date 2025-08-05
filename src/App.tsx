@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 import { APIProvider as GoogleMapAPIProvider } from '@vis.gl/react-google-maps'
 import { Compass, Map as MapIcon } from 'lucide-react'
 
+import Turntable from './components/turntable'
 import LiquidGlass from './components/ui/liquid-glass'
 import { Vortex } from './components/ui/vortex'
 import { MenuSidebar } from './layouts/menu-sidebar'
@@ -34,7 +35,6 @@ function App() {
       libraries={['places']}
       language="zh-TW"
       region="TW"
-      onLoad={() => console.log('Google Maps API loaded')}
     >
       <SidebarProvider className="p-0">
         <div className="w-screen max-h-screen p-2 rounded overflow-hidden">
@@ -65,7 +65,7 @@ function App() {
                 </TabsContent>
                 <TabsContent value="turntable" className="size-full p-1 rounded bg-glassmorphism">
                   <LiquidGlass>
-                    Change your password here.
+                    <Turntable onResult={option => console.log('選中了:', option.label)} />
                   </LiquidGlass>
                 </TabsContent>
               </Tabs>
