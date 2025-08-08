@@ -24,8 +24,7 @@ function useDialog(props?: DialogHooksProps) {
     if (open) {
       onOpenChange?.(true)
       trigger()
-    }
- else {
+    } else {
       onOpenChange?.(false)
       dismiss()
     }
