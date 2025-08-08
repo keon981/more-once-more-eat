@@ -1,3 +1,5 @@
+import { PlaceSearchInput } from '@/components/maps/PlaceSearch.Input'
+import SearchButton from '@/components/maps/Search.button'
 import LiquidGlass from '@/components/ui/liquid-glass'
 import {
   Sidebar,
@@ -14,6 +16,9 @@ export function MenuSidebar() {
     <Sidebar collapsible="offcanvas">
       <LiquidGlass>
         <SidebarContent>
+          <div className="m-4">
+            <SearchButton>搜尋餐廳、地點...</SearchButton>
+          </div>
           <SidebarGroup>
             <SidebarGroupContent>
               {markers.map(marker => (

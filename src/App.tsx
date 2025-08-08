@@ -7,9 +7,8 @@ import LiquidGlass from './components/ui/liquid-glass'
 import { Vortex } from './components/ui/vortex'
 import MenuList from './layouts/menu-list'
 import { MenuSidebar } from './layouts/menu-sidebar'
-import GoogleMapComponent from '@/components/maps/GoogleMap'
-import { PlaceSearchInput } from '@/components/maps/PlaceSearchInput'
-import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
+import GoogleMapComponent from '@/components/maps/GoogleMap.layout'
+import { SidebarProvider } from '@/components/ui/sidebar'
 import { Tabs, TabsContent } from '@/components/ui/tabs'
 import { useMapStore } from '@/stores/map-store'
 import { mapApiKey } from '@/utils/map-center'
@@ -41,11 +40,6 @@ function App() {
           <Vortex backgroundColor="black" className="flex size-full">
             <MenuSidebar />
             <main className="size-full relative flex flex-col gap-2 rounded">
-              <nav className="flex gap-1 z-50 items-center p-1 rounded bg-glassmorphism">
-                <SidebarTrigger />
-                <PlaceSearchInput placeholder="搜尋餐廳、地點..." />
-              </nav>
-
               <Tabs defaultValue="map" className="relative size-full">
                 <MenuList />
                 <TabsContent value="map" className="size-full p-1 rounded bg-glassmorphism">

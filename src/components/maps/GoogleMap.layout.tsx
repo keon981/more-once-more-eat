@@ -51,7 +51,15 @@ function GoogleMapComponent({
         <AdvancedMarker
           key={`marker-${marker.lat}-${marker.lng}`}
           position={marker}
-        />
+        >
+          <Pin
+            background="#FBBC04"
+            glyphColor="#000"
+            borderColor="#000"
+          >
+            {/* <img src={imgsrc} alt="img" className="size-8 rounded-full" /> */}
+          </Pin>
+        </AdvancedMarker>
       ))}
     </GoogleMap>
   )
