@@ -1,16 +1,16 @@
 import { useEffect } from 'react'
 
 import { APIProvider as GoogleMapAPIProvider } from '@vis.gl/react-google-maps'
-import { Compass, Map as MapIcon } from 'lucide-react'
 
 import Turntable from './components/turntable'
 import LiquidGlass from './components/ui/liquid-glass'
 import { Vortex } from './components/ui/vortex'
+import MenuList from './layouts/menu-list'
 import { MenuSidebar } from './layouts/menu-sidebar'
 import GoogleMapComponent from '@/components/maps/GoogleMap'
 import { PlaceSearchInput } from '@/components/maps/PlaceSearchInput'
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
-import { LiquidGlassTabsList, Tabs, TabsContent, TabsTrigger } from '@/components/ui/tabs'
+import { Tabs, TabsContent } from '@/components/ui/tabs'
 import { useMapStore } from '@/stores/map-store'
 import { mapApiKey } from '@/utils/map-center'
 
@@ -38,26 +38,16 @@ function App() {
     >
       <SidebarProvider className="p-0">
         <div className="w-screen max-h-screen p-2 rounded overflow-hidden">
-          <Vortex
-            backgroundColor="black"
-            className="flex gap-2 w-full h-full"
-          >
+          <Vortex backgroundColor="black" className="flex size-full">
             <MenuSidebar />
-            <main className="size-full flex flex-col gap-2 rounded">
+            <main className="size-full relative flex flex-col gap-2 rounded">
               <nav className="flex gap-1 z-50 items-center p-1 rounded bg-glassmorphism">
                 <SidebarTrigger />
                 <PlaceSearchInput placeholder="搜尋餐廳、地點..." />
               </nav>
 
               <Tabs defaultValue="map" className="relative size-full">
-                <LiquidGlassTabsList className="absolute py-6 px-1 bottom-14 left-1/2 -translate-x-1/2 z-30">
-                  <TabsTrigger value="map" className="px-1 py-2.5 rounded-xl">
-                    <MapIcon /> Map
-                  </TabsTrigger>
-                  <TabsTrigger value="turntable" className="px-1 py-2.5 rounded-xl">
-                    <Compass /> Turntable
-                  </TabsTrigger>
-                </LiquidGlassTabsList>
+                <MenuList />
                 <TabsContent value="map" className="size-full p-1 rounded bg-glassmorphism">
                   <LiquidGlass className="size-full">
                     <GoogleMapComponent />
@@ -69,6 +59,7 @@ function App() {
                   </LiquidGlass>
                 </TabsContent>
               </Tabs>
+
             </main>
 
           </Vortex>

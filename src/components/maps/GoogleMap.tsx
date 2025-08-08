@@ -1,4 +1,4 @@
-import { AdvancedMarker, Map as GoogleMap } from '@vis.gl/react-google-maps'
+import { AdvancedMarker, Map as GoogleMap, Pin } from '@vis.gl/react-google-maps'
 import type { MapCameraChangedEvent, MapMouseEvent, MapProps } from '@vis.gl/react-google-maps'
 
 import { cn } from '@/lib/utils'
@@ -12,11 +12,11 @@ function GoogleMapComponent({
   className,
   ...props
 }: Props) {
-  const { zoom, center, markers, addMarker, setCameraState } = useMapStore()
+  const { zoom, center, markers, setMarker, setCameraState } = useMapStore()
 
   const handleMapClick = (event: MapMouseEvent) => {
     if (event.detail.latLng) {
-      addMarker({
+      setMarker({
         lat: event.detail.latLng.lat,
         lng: event.detail.latLng.lng,
         name: '新標記',
@@ -44,6 +44,7 @@ function GoogleMapComponent({
       onClick={handleMapClick}
       onCameraChanged={handleCameraChanged}
       reuseMaps
+      disableDefaultUI={true}
       {...props}
     >
       {markers.map(marker => (

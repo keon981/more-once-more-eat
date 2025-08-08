@@ -2,6 +2,7 @@ import * as React from 'react'
 
 import * as TabsPrimitive from '@radix-ui/react-tabs'
 
+import { buttonVariants } from './button'
 import LiquidGlass from './liquid-glass'
 import { cn } from '@/lib/utils'
 
@@ -56,8 +57,9 @@ function TabsTrigger({
     <TabsPrimitive.Trigger
       data-slot="tabs-trigger"
       className={cn(
-        'h-[calc(100%-1px)] inline-flex flex-1 items-center justify-center gap-1.5 ',
-        'font-bold focus-visible:border-ring text-foreground/75 rounded-md border border-transparent px-2 py-1 text-sm whitespace-nowrap transition-[color,box-shadow] [&_svg]:shrink-0 [&_svg:not([class*=\'size-\'])]:size-4 [&_svg]:pointer-events-none',
+        buttonVariants({ variant: 'ghost', size: 'icon' }),
+        'h-[calc(100%-1px)] inline-flex items-center justify-center gap-2',
+        'font-bold focus-visible:border-ring text-foreground/75 rounded-md border border-transparent px-2 py-1 text-sm whitespace-nowrap transition-[color,box-shadow]',
         'data-[state=active]:bg-foreground data-[state=active]:text-muted focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-ring focus-visible:outline-1 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:shadow-sm',
         className,
       )}

@@ -25,12 +25,14 @@ import {
 import { useIsMobile } from '@/hooks/use-mobile'
 import { cn } from '@/lib/utils'
 
-const SIDEBAR_COOKIE_NAME = 'sidebar_state'
-const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7
-const SIDEBAR_WIDTH = '16rem'
-const SIDEBAR_WIDTH_MOBILE = '18rem'
-const SIDEBAR_WIDTH_ICON = '3rem'
-const SIDEBAR_KEYBOARD_SHORTCUT = 'b'
+enum SidebarConfig {
+  COOKIE_NAME = 'sidebar_state',
+  COOKIE_MAX_AGE = 604800, // 60 * 60 * 24 * 7 (7 days in seconds)
+  WIDTH = '16rem',
+  WIDTH_MOBILE = '18rem',
+  WIDTH_ICON = '3rem',
+  KEYBOARD_SHORTCUT = 'b',
+}
 
 interface SidebarContextProps {
   state: 'expanded' | 'collapsed'
@@ -83,7 +85,7 @@ function SidebarProvider({
       }
 
       // This sets the cookie to keep the sidebar state.
-      document.cookie = `${SIDEBAR_COOKIE_NAME}=${openState}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`
+      document.cookie = `${SidebarConfig.COOKIE_NAME}=${openState}; path=/; max-age=${SidebarConfig.COOKIE_MAX_AGE}`
     },
     [setOpenProp, open],
   )
@@ -97,7 +99,7 @@ function SidebarProvider({
   React.useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (
-        event.key === SIDEBAR_KEYBOARD_SHORTCUT
+        event.key === SidebarConfig.KEYBOARD_SHORTCUT
         && (event.metaKey || event.ctrlKey)
       ) {
         event.preventDefault()
@@ -133,8 +135,8 @@ function SidebarProvider({
           data-slot="sidebar-wrapper"
           style={
             {
-              '--sidebar-width': SIDEBAR_WIDTH,
-              '--sidebar-width-icon': SIDEBAR_WIDTH_ICON,
+              '--sidebar-width': SidebarConfig.WIDTH,
+              '--sidebar-width-icon': SidebarConfig.WIDTH_ICON,
               ...style,
             } as React.CSSProperties
           }
@@ -190,7 +192,7 @@ function Sidebar({
           className="bg-sidebar text-sidebar-foreground w-(--sidebar-width) [&>button]:hidden"
           style={
             {
-              '--sidebar-width': SIDEBAR_WIDTH_MOBILE,
+              '--sidebar-width': SidebarConfig.WIDTH_MOBILE,
             } as React.CSSProperties
           }
           side={side}
@@ -199,7 +201,7 @@ function Sidebar({
             <SheetTitle>Sidebar</SheetTitle>
             <SheetDescription>Displays the mobile sidebar.</SheetDescription>
           </SheetHeader>
-          <div className="flex h-full w-full flex-col">{children}</div>
+          <div className="flex size-full flex-col">{children}</div>
         </SheetContent>
       </Sheet>
     )
@@ -229,14 +231,15 @@ function Sidebar({
       <div
         data-slot="sidebar-container"
         className={cn(
-          ' inset-y-0 z-10 hidden h-full w-(--sidebar-width) transition-[left,right,width] duration-200 ease-linear md:flex',
+          'fixed inset-y-2 z-10 hidden h-[calc(100%-1rem)] w-(--sidebar-width) transition-[left,right,width] duration-200 ease-linear md:flex',
+          // Adjust the collapsible for offcanvas position changes.
           side === 'left'
-            ? 'group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)]'
-            : 'group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)]',
+            ? 'left-0 group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)]'
+            : 'right-0 group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)]',
           // Adjust the padding for floating and inset variants.
           variant === 'floating' || variant === 'inset'
             ? 'p-2 group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+(--spacing(4))+2px)]'
-            : 'group-data-[collapsible=icon]:w-(--sidebar-width-icon)',
+            : 'group-data-[collapsible=icon]:w-(--sidebar-width-icon) group-data-[side=left]:border-r group-data-[side=right]:border-l',
           className,
         )}
         {...props}
@@ -244,7 +247,7 @@ function Sidebar({
         <div
           data-sidebar="sidebar"
           data-slot="sidebar-inner"
-          className=" border border-accent-foreground rounded bg-glassmorphism group-data-[variant=floating]:border-sidebar-border flex h-full w-full flex-col group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:shadow-sm"
+          className="flex size-full flex-col border border-accent-foreground rounded bg-glassmorphism group-data-[variant=floating]:border-sidebar-border group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:shadow-sm"
         >
           {children}
         </div>

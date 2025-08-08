@@ -11,7 +11,7 @@ import { useMapStore } from '@/stores/map-store'
 export function MenuSidebar() {
   const { markers } = useMapStore()
   return (
-    <Sidebar>
+    <Sidebar collapsible="offcanvas">
       <LiquidGlass>
         <SidebarContent>
           <SidebarGroup>
@@ -24,7 +24,6 @@ export function MenuSidebar() {
             </SidebarGroupContent>
           </SidebarGroup>
         </SidebarContent>
-
       </LiquidGlass>
     </Sidebar>
   )
