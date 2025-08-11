@@ -42,12 +42,12 @@ function App() {
             <main className="size-full relative flex flex-col gap-2 rounded">
               <Tabs defaultValue="map" className="relative size-full">
                 <MenuList />
-                <TabsContent value="map" className="size-full p-1 rounded bg-glassmorphism">
+                <TabsContent value="map" className="size-full p-1 rounded border-stereoscopic">
                   <LiquidGlass className="size-full">
                     <GoogleMapComponent />
                   </LiquidGlass>
                 </TabsContent>
-                <TabsContent value="turntable" className="size-full p-1 rounded bg-glassmorphism">
+                <TabsContent value="turntable" className="size-full p-1 rounded border-stereoscopic">
                   <LiquidGlass>
                     <Turntable onResult={option => console.log('選中了:', option.label)} />
                   </LiquidGlass>

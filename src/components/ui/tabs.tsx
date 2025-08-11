@@ -41,7 +41,7 @@ function LiquidGlassTabsList({
   ...props
 }: React.ComponentProps<typeof TabsPrimitive.List>) {
   return (
-    <TabsList className={cn('h-13 bg-transparent glass-card gap-0 rounded-xl absolute z-30 overflow-hidden', className)} {...props}>
+    <TabsList className={cn('h-13 bg-transparent liquid-glasscard gap-0 rounded-xl absolute z-30 overflow-hidden', className)} {...props}>
       <LiquidGlass className="inline-flex gap-1 items-center justify-center text-center">
         {children}
       </LiquidGlass>
@@ -56,11 +56,10 @@ function TabsTrigger({
   return (
     <TabsPrimitive.Trigger
       data-slot="tabs-trigger"
+      // data-color="secondary"
       className={cn(
         buttonVariants({ variant: 'ghost', size: 'icon' }),
-        'h-[calc(100%-1px)] inline-flex items-center justify-center gap-2',
-        'font-bold focus-visible:border-ring text-foreground/75 rounded-md border border-transparent px-2 py-1 text-sm whitespace-nowrap transition-[color,box-shadow]',
-        'data-[state=active]:bg-foreground data-[state=active]:text-muted focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-ring focus-visible:outline-1 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:shadow-sm',
+        'data-[state=active]:bg-foreground data-[state=active]:text-background focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-ring focus-visible:outline-1 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:shadow-sm',
         className,
       )}
       {...props}

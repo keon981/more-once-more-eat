@@ -16,12 +16,7 @@ import {
   SheetTitle,
 } from './sheet'
 import { Skeleton } from './skeleton'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from './tooltip'
+import Tooltip from './tooltip'
 import { useIsMobile } from '@/hooks/useMobile'
 import { cn } from '@/lib/utils'
 
@@ -130,7 +125,7 @@ function SidebarProvider({
 
   return (
     <SidebarContext value={contextValue}>
-      <TooltipProvider delayDuration={0}>
+      <Tooltip.Root delayDuration={0}>
         <div
           data-slot="sidebar-wrapper"
           style={
@@ -148,7 +143,7 @@ function SidebarProvider({
         >
           {children}
         </div>
-      </TooltipProvider>
+      </Tooltip.Root>
     </SidebarContext>
   )
 }
@@ -234,7 +229,7 @@ function Sidebar({
           'fixed inset-y-2 z-10 hidden h-[calc(100%-1rem)] w-(--sidebar-width) transition-[left,right,width] duration-200 ease-linear md:flex',
           // Adjust the collapsible for offcanvas position changes.
           side === 'left'
-            ? 'left-0 group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)]'
+            ? 'left-1 group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)]'
             : 'right-0 group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)]',
           // Adjust the padding for floating and inset variants.
           variant === 'floating' || variant === 'inset'
@@ -247,7 +242,7 @@ function Sidebar({
         <div
           data-sidebar="sidebar"
           data-slot="sidebar-inner"
-          className="flex size-full flex-col border border-accent-foreground rounded bg-glassmorphism group-data-[variant=floating]:border-sidebar-border group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:shadow-sm"
+          className="flex size-full flex-col border border-accent-foreground rounded border-stereoscopic group-data-[variant=floating]:border-sidebar-border group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:shadow-sm"
         >
           {children}
         </div>
@@ -268,6 +263,7 @@ function SidebarTrigger({
       data-sidebar="trigger"
       data-slot="sidebar-trigger"
       variant="ghost"
+      color="accent"
       size="icon"
       className={cn('size-7', className)}
       onClick={(event) => {
@@ -276,8 +272,10 @@ function SidebarTrigger({
       }}
       {...props}
     >
-      <PanelLeftIcon height="1em" width="1em" />
-      <span className="sr-only">Toggle Sidebar</span>
+      <>
+        <PanelLeftIcon height="1em" width="1em" />
+        <span className="sr-only">Toggle Sidebar</span>
+      </>
     </Button>
   )
 }
@@ -510,7 +508,7 @@ function SidebarMenuButton({
 }: React.ComponentProps<'button'> & {
   asChild?: boolean
   isActive?: boolean
-  tooltip?: string | React.ComponentProps<typeof TooltipContent>
+  tooltip?: string | React.ComponentProps<typeof Tooltip.Content>
 } & VariantProps<typeof sidebarMenuButtonVariants>) {
   const Comp = asChild ? Slot : 'button'
   const { isMobile, state } = useSidebar()
@@ -537,15 +535,15 @@ function SidebarMenuButton({
   }
 
   return (
-    <Tooltip>
-      <TooltipTrigger asChild>{button}</TooltipTrigger>
-      <TooltipContent
+    <Tooltip.Root>
+      <Tooltip.Trigger asChild>{button}</Tooltip.Trigger>
+      <Tooltip.Content
         side="right"
         align="center"
         hidden={state !== 'collapsed' || isMobile}
         {...tooltip}
       />
-    </Tooltip>
+    </Tooltip.Root>
   )
 }
 

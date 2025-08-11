@@ -9,15 +9,15 @@ function MenuList() {
     <Dock>
       <LiquidGlassTabsList className="min-w-10 -translate-x-1/2">
         <DockItem className="overflow-hidden">
-          <SidebarTrigger variant="ghost" size="icon" className="size-12 rounded-full text-accent-foreground/75" />
+          <SidebarTrigger size="icon" className="size-12 rounded-full" />
         </DockItem>
         <DockItem className="overflow-hidden">
-          <TabsTrigger value="map" className="size-12 px-1 py-2.5">
+          <TabsTrigger value="map" className="size-12 px-1 py-2.5 rounded-full">
             <MapIcon />
           </TabsTrigger>
         </DockItem>
         <DockItem className="overflow-hidden">
-          <TabsTrigger value="turntable" className="size-12 px-1 py-2.5">
+          <TabsTrigger value="turntable" className="size-12 px-1 py-2.5 rounded-full">
             <Compass />
           </TabsTrigger>
         </DockItem>

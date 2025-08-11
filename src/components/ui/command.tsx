@@ -1,15 +1,8 @@
-import * as React from 'react'
-
 import { Command as CommandPrimitive } from 'cmdk'
 import { SearchIcon } from 'lucide-react'
 
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from './dialog'
+import Dialog from './dialog'
+import { KbdKey } from './kbd'
 import { cn } from '@/lib/utils'
 
 function CommandRoot({
@@ -20,7 +13,8 @@ function CommandRoot({
     <CommandPrimitive
       data-slot="command"
       className={cn(
-        'bg-popover text-popover-foreground flex size-full flex-col overflow-hidden rounded-md',
+        'text-popover-foreground flex size-full flex-col overflow-hidden rounded-md',
+        'bg-white/10 border border-white/20 backdrop-blur bg-clip-padding backdrop-filter backdrop-saturate-100 backdrop-contrast-100',
         className,
       )}
       {...props}
@@ -35,27 +29,27 @@ function CommandDialog({
   className,
   showCloseButton = true,
   ...props
-}: React.ComponentProps<typeof Dialog> & {
+}: React.ComponentProps<typeof Dialog.Root> & {
   title?: string
   description?: string
   className?: string
   showCloseButton?: boolean
 }) {
   return (
-    <Dialog {...props}>
-      <DialogHeader className="sr-only">
-        <DialogTitle>{title}</DialogTitle>
-        <DialogDescription>{description}</DialogDescription>
-      </DialogHeader>
-      <DialogContent
+    <Dialog.Root {...props}>
+      <Dialog.Header className="sr-only">
+        <Dialog.Title>{title}</Dialog.Title>
+        <Dialog.Description>{description}</Dialog.Description>
+      </Dialog.Header>
+      <Dialog.Content
         className={cn('overflow-hidden p-0', className)}
         showCloseButton={showCloseButton}
       >
         <CommandRoot className="[&_[cmdk-group-heading]]:text-muted-foreground **:data-[slot=command-input-wrapper]:h-12 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group]]:px-2 [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5">
           {children}
         </CommandRoot>
-      </DialogContent>
-    </Dialog>
+      </Dialog.Content>
+    </Dialog.Root>
   )
 }
 
@@ -159,27 +153,72 @@ function CommandShortcut({
   ...props
 }: React.ComponentProps<'span'>) {
   return (
-    <span
-      data-slot="command-shortcut"
-      className={cn(
-        'text-muted-foreground ml-auto text-xs tracking-widest',
-        className,
-      )}
-      {...props}
-    />
+    <KbdKey data-slot="command-kbd-key" {...props} />
   )
 }
 
-const Command = {
-  Root: CommandRoot,
-  Dialog: CommandDialog,
-  Empty: CommandEmpty,
-  Group: CommandGroup,
-  Input: CommandInput,
-  Item: CommandItem,
-  List: CommandList,
-  Separator: CommandSeparator,
-  Shortcut: CommandShortcut,
+interface CommandProps extends React.ComponentProps<typeof CommandRoot> {
+  title?: string
+  empty?: string
+  list?: { key: string, name: string, icon: React.ReactNode, shortcut?: string }[]
+  description?: string
+  className?: string
+  showCloseButton?: boolean
 }
 
-export default Command
+function Command({
+  empty = 'No results found.',
+  list = [],
+  ...props
+}: CommandProps) {
+  return (
+    <CommandRoot className="rounded-lg border shadow-md md:min-w-[450px]" {...props}>
+      <CommandInput placeholder="Type a command or search..." />
+      <CommandList>
+        <CommandEmpty>{empty}</CommandEmpty>
+        {list.map(({ key, name, icon, shortcut }) => (
+          <CommandItem key={key}>
+            {icon}
+            <span>{name}</span>
+            {shortcut && <CommandShortcut>{shortcut}</CommandShortcut>}
+          </CommandItem>
+        ))}
+      </CommandList>
+    </CommandRoot>
+  )
+}
+
+Command.Root = CommandRoot
+Command.Dialog = CommandDialog
+Command.Empty = CommandEmpty
+Command.Group = CommandGroup
+Command.Input = CommandInput
+Command.Item = CommandItem
+Command.List = CommandList
+Command.Separator = CommandSeparator
+Command.Shortcut = CommandShortcut
+
+interface CommandComponent extends React.FC<CommandProps> {
+  Root: typeof CommandRoot
+  Dialog: typeof CommandDialog
+  Empty: typeof CommandEmpty
+  Group: typeof CommandGroup
+  Input: typeof CommandInput
+  Item: typeof CommandItem
+  List: typeof CommandList
+  Separator: typeof CommandSeparator
+  Shortcut: typeof CommandShortcut
+}
+
+export default Command as CommandComponent
+export {
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandRoot,
+  CommandSeparator,
+  CommandShortcut,
+}

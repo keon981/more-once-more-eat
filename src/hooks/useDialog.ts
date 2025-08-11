@@ -5,9 +5,10 @@ interface DialogHooksProps {
   onOpenChange?: (open: boolean) => void
 }
 
-function useDialog(props?: DialogHooksProps) {
-  const { onClick, onOpenChange }: DialogHooksProps = props || {}
-
+function useDialog({
+  onClick,
+  onOpenChange,
+}: DialogHooksProps = {}) {
   const [isOpen, setIsOpen] = useState(false)
   const triggerRef = useRef<HTMLButtonElement>(null)
 

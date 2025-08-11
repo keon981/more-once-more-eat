@@ -15,11 +15,11 @@ interface Props {
 function LiquidGlass({ children, className, style, classNames, styles }: Props) {
   return (
     <>
-      <div className={cn('glass-filter', classNames?.filter)} style={styles?.filter} />
-      <div className={cn('glass-overlay', classNames?.overlay)} style={styles?.overlay} />
-      <div className={cn('glass-specular', classNames?.specular)} style={styles?.specular} />
+      <div className={cn('liquid-glassfilter', classNames?.filter)} style={styles?.filter} />
+      <div className={cn('liquid-glassoverlay', classNames?.overlay)} style={styles?.overlay} />
+      <div className={cn('liquid-glassspecular', classNames?.specular)} style={styles?.specular} />
       <div
-        className={cn('glass-content', classNames?.content, className)}
+        className={cn('liquid-glasscontent', classNames?.content, className)}
         style={{ ...styles?.content, ...style }}
       >
         {children}
