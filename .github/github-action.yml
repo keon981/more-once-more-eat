@@ -9,16 +9,21 @@ on:
     branches: [main, develop]
 
 jobs:
-  build:
+  test: # 測試機器
     runs-on: ubuntu-latest # 執行環境 Linux
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Setup Node
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: 24
-      - name: Install Dependencies
-        run: pnpm install
-      - name: Build
-        run: pnpm build
+      - run: pnpm install
+      - run: pnpm test
+  build: # 生產機器
+    runs-on: ubuntu-latest # 執行環境 Linux
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+      - run: pnpm install
+      - run: pnpm build
