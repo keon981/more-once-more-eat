@@ -16,7 +16,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-      - run: npm run install
+      - run: npm install
       - run: npm run test
   build: # 生產機器
     runs-on: ubuntu-latest # 執行環境 Linux
@@ -25,6 +25,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-      - run: npm run install
+      - run: npm install
       - run: npm run build
 
