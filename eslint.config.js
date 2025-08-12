@@ -19,24 +19,6 @@ export default antfu({
     '**/build',
     '**/public',
   ],
-  formatters: {
-    /**
-     * Format CSS, LESS, SCSS files, also the `<style>` blocks in Vue
-     * By default uses Prettier
-     */
-    css: true,
-    /**
-     * Format HTML files
-     * By default uses Prettier
-     */
-    html: true,
-    /**
-     * Format Markdown files
-     * Supports Prettier and dprint
-     * By default uses Prettier
-     */
-    markdown: 'prettier',
-  },
   rules: {
     'react-refresh/only-export-components': 'off',
     'style/jsx-one-expression-per-line': 'off',
@@ -46,7 +28,6 @@ export default antfu({
     'no-console': 'warn',
     'no-nested-ternary': 'error',
     'antfu/if-newline': 'off',
-    'react-hooks/exhaustive-deps': 'off',
   },
 })
   .overrides({
