@@ -1,0 +1,24 @@
+name: Github Actions Demo
+run-name: Github Actions Demo
+
+# 觸發 github aciotn 的時機
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest # 執行環境 Linux
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 24
+      - name: Install Dependencies
+        run: pnpm install
+      - name: Build
+        run: pnpm build
