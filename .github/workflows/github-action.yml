@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest # 執行環境 Linux
     steps:
       - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
+      - uses: actions/setup-node@v4
         with:
           node-version: 24
       - run: pnpm install
@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest # 執行環境 Linux
     steps:
       - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
+      - uses: actions/setup-node@v4
         with:
           node-version: 24
       - run: pnpm install
