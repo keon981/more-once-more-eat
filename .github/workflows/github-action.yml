@@ -12,25 +12,37 @@ jobs:
   test: # 測試機器
     runs-on: ubuntu-latest # 執行環境 Linux
     steps:
-      - uses: actions/checkout@v5
-      - uses: pnpm/setup-node@v4 # 安裝 pnpm
-        # with:
-        #   version: 10 # 由於 package.json 裡有設定 packageManager，此處版本為選填
-      - uses: actions/setup-node@v4
+      - name: Checkout
+        uses: actions/checkout@v5
+      - uses: pnpm/setup-node@v4
+        name: Install pnpm
+        with:
+          version: 10
+          run_install: false
+      - name: Install Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 24
           cache: 'pnpm'
-      - run: pnpm install
+      - name: Install dependencies
+        run: pnpm install
       - run: pnpm run test
   build: # 生產機器
     runs-on: ubuntu-latest # 執行環境 Linux
     steps:
-      - uses: actions/checkout@v5
+      - name: Checkout
+        uses: actions/checkout@v5
       - uses: pnpm/setup-node@v4
-      - uses: actions/setup-node@v4
+        name: Install pnpm
+        with:
+          version: 10
+          run_install: false
+      - name: Install Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 24
           cache: 'pnpm'
-      - run: pnpm install
+      - name: Install dependencies
+        run: pnpm install
       - run: pnpm run build
 
