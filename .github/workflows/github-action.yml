@@ -17,15 +17,16 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-      - run: pnpm install
+      - run: pnpm install --no-frozen-lockfile
       - run: pnpm run test
   build: # 生產機器
     runs-on: ubuntu-latest # 執行環境 Linux
     steps:
       - uses: actions/checkout@v5
       - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 24
-      - run: pnpm install
+      - run: pnpm install --no-frozen-lockfile
       - run: pnpm run build
 
