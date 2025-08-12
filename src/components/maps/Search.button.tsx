@@ -1,4 +1,4 @@
-import { Search as SearchIcon } from 'lucide-react'
+import { Plus, Search as SearchIcon } from 'lucide-react'
 import { useHotkeys } from 'react-hotkeys-hook'
 
 import { BorderBeam } from '../magicui/border-beam'
@@ -7,36 +7,54 @@ import { Button } from '../ui/button'
 import Command from '../ui/command'
 import { Flex } from '../ui/flex'
 import { Kbd, KbdKey } from '../ui/kbd'
-import Shortcut from '../ui/shortcut'
 import { useDialog } from '@/hooks/useDialog'
 import { usePlaceSearch } from '@/hooks/usePlaceSearch'
 import { cn } from '@/lib/utils'
 
 interface Props extends ButtonProps {
-
+  onPlaceSelect?: (place: google.maps.places.PlaceResult) => void
 }
 
-function SearchButton({ className, ...props }: Props) {
-  const { triggerProps, dialogProps, setIsOpen } = useDialog()
+function SearchButton({ className, onPlaceSelect, ...props }: Props) {
+  const { triggerProps, dialogProps, trigger } = useDialog()
   const {
     query,
     setQuery,
     predictions,
     isLoading,
-    selectedIndex,
-    setSelectedIndex,
     getPlacePredictions,
     getPlaceDetails,
     setPredictions,
   } = usePlaceSearch()
+  const isEmpty = query.trim().length > 0 && predictions.length === 0 && !isLoading
+  const loading = isLoading && query.trim().length > 0 && predictions.length === 0
 
   // keyboard shortcut
   useHotkeys('mod+k', () => {
-    setIsOpen?.(open => !open)
+    trigger()
   })
+
+  const handleValueChange = async (value: string) => {
+    setQuery(value)
+
+    if (value.trim()) {
+      getPlacePredictions(value)
+    } else {
+      setPredictions([])
+    }
+  }
+
+  const handleAddMarker = (prediction: PlacePrediction) => {
+    getPlaceDetails(prediction.place_id)
+      .then((res) => {
+        if (!res?.placeResult) return
+        onPlaceSelect?.(res?.placeResult)
+      })
+  }
 
   return (
     <>
+      {/* 搜尋按鈕 */}
       <Button
         className={cn(
           'w-full justify-between items-center rounded-full bg-accent-foreground/10 border border-accent-foreground/10',
@@ -55,24 +73,50 @@ function SearchButton({ className, ...props }: Props) {
           <KbdKey>K</KbdKey>
         </Kbd>
       </Button>
-      <Command.Dialog showCloseButton={false} {...dialogProps}>
-        <Command.Input />
 
-        <Command.List>
-          {/* {loading && <Command.Loading>Hang on…</Command.Loading>} */}
+      {/* 搜尋結果下拉選單 */}
+      <Command.Dialog
+        value={query}
+        dialogProps={{
+          showCloseButton: false,
+          ...dialogProps,
+          onOpenChange(open) {
+            dialogProps.onOpenChange?.(open)
+            if (!open) setQuery('')
+          },
+        }}
+        shouldFilter={false}
+      >
+        <Command.Input
+          placeholder="Search for a place..."
+          value={query}
+          onValueChange={handleValueChange}
+        />
 
-          <Command.Empty>No results found.</Command.Empty>
+        <Command.List className="px-2">
+          {loading && <Command.Loading />}
+          {isEmpty && <Command.Empty>No results found.</Command.Empty>}
 
-          <Command.Group heading="Fruits">
-            <Command.Item>Apple</Command.Item>
-            <Command.Item>Orange</Command.Item>
-            <Command.Separator />
-            <Command.Item>Pear</Command.Item>
-            <Command.Item>Blueberry</Command.Item>
-          </Command.Group>
-
-          <Command.Item>Fish</Command.Item>
+          {
+            predictions.map(prediction => (
+              <Command.Item key={prediction.structured_formatting.main_text}>
+                <Flex as="p" items="start" direction="column" gap={1}>
+                  <span className="font-medium text-sm">
+                    {prediction.structured_formatting.main_text}
+                  </span>
+                  <span className="text-xs text-muted-foreground truncate">
+                    {prediction.structured_formatting.secondary_text}
+                  </span>
+                </Flex>
+                <Button className="ml-auto" size="icon" variant="ghost" onClick={() => handleAddMarker(prediction)}>
+                  <Plus />
+                </Button>
+              </Command.Item>
+            ))
+          }
         </Command.List>
+
+        {/* 邊框效果 */}
         <BorderBeam
           duration={6}
           size={400}

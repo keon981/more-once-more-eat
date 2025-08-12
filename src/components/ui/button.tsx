@@ -14,7 +14,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         solid: 'bg-background shadow-sm hover:bg-background/90',
-        outline: 'border bg-background shadow-xs hover:text-accent-foreground',
+        outline: 'border shadow-xs hover:bg-background  hover:text-accent-foreground',
         text: 'bg-background  shadow-sm hover:bg-background/90',
         ghost: 'bg-transparent hover:bg-background',
         link: 'text-background  underline-offset-4 hover:underline',

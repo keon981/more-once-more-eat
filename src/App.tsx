@@ -16,17 +16,19 @@ import { mapApiKey } from '@/utils/map-center'
 import './App.css'
 
 function App() {
-  const { setCenter } = useMapStore()
+  const { setLocation, location, center } = useMapStore()
 
   useEffect(() => {
     if (!navigator?.geolocation?.getCurrentPosition) return
     navigator.geolocation.getCurrentPosition((pos) => {
-      setCenter({
+      setLocation({
         lat: pos.coords.latitude,
         lng: pos.coords.longitude,
       })
     })
   }, [])
+
+  console.log('center', location, center)
 
   return (
     <GoogleMapAPIProvider

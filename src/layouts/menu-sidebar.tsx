@@ -1,5 +1,7 @@
-import { PlaceSearchInput } from '@/components/maps/PlaceSearch.Input'
+import { Minus } from 'lucide-react'
+
 import SearchButton from '@/components/maps/Search.button'
+import { Button } from '@/components/ui/button'
 import LiquidGlass from '@/components/ui/liquid-glass'
 import {
   Sidebar,
@@ -8,10 +10,15 @@ import {
   SidebarGroupContent,
   SidebarGroupLabel,
 } from '@/components/ui/sidebar'
+import type { MarkerType } from '@/stores/map-store'
 import { useMapStore } from '@/stores/map-store'
 
 export function MenuSidebar() {
-  const { markers } = useMapStore()
+  const { markers, removeMarker } = useMapStore()
+  const handleRemoveMarker = (marker: MarkerType) => {
+    removeMarker(marker)
+  }
+
   return (
     <Sidebar collapsible="offcanvas">
       <LiquidGlass>
@@ -22,8 +29,16 @@ export function MenuSidebar() {
           <SidebarGroup>
             <SidebarGroupContent>
               {markers.map(marker => (
-                <SidebarGroupLabel key={`marker-${marker.lat}-${marker.lng}`}>
-                  {marker.name}
+                <SidebarGroupLabel className="not-first:mt-4 h-auto min-h-8" key={`marker-${marker.lat}-${marker.lng}`}>
+                  <span>{marker.name}</span>
+                  <Button
+                    className="ml-auto size-6 hover:bg-destructive"
+                    size="icon"
+                    variant="ghost"
+                    onClick={() => handleRemoveMarker(marker)}
+                  >
+                    <Minus />
+                  </Button>
                 </SidebarGroupLabel>
               ))}
             </SidebarGroupContent>

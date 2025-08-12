@@ -8,14 +8,15 @@ interface Props {
   radius?: number
 }
 
-function usePlaceSearch({ radius = 0.000001 }: Props = {}) {
+function usePlaceSearch({ radius = 1500 }: Props = {}) {
   // state
   const [query, setQuery] = useState('')
   const [predictions, setPredictions] = useState<PlacePrediction[]>([])
   const [isLoading, setIsLoading] = useState(false)
-  const [selectedIndex, setSelectedIndex] = useState(-1)
   const places = useMapsLibrary('places')
-  const { center, addMarker } = useMapStore()
+  const { location, addMarker } = useMapStore()
+  const radiusToMeter = radius / 111320
+  const cosLat = Math.cos(location.lat * (Math.PI / 180))
 
   // 取得地點預測
   const getPlacePredictions = useCallback(
@@ -29,20 +30,20 @@ function usePlaceSearch({ radius = 0.000001 }: Props = {}) {
 
       try {
         // 建立搜尋參數，包含距離限制
-        const isCenterValid = center && !Number.isNaN(center.lat) && !Number.isNaN(center.lng)
-        const locationBias = isCenterValid
+        const isCenterValid = location && !Number.isNaN(location.lat) && !Number.isNaN(location.lng)
+        const locationRestriction = isCenterValid
           ? {
-              east: center.lng + radius,
-              west: center.lng - radius,
-              north: center.lat + radius,
-              south: center.lat - radius,
+              east: location.lng + (radius / (111320 * cosLat)),
+              west: location.lng - (radius / (111320 * cosLat)),
+              north: location.lat + radiusToMeter,
+              south: location.lat - radiusToMeter,
             }
           : undefined
         const request: google.maps.places.AutocompleteRequest = {
           input,
           includedRegionCodes: ['tw'], // 限制台灣
           includedPrimaryTypes: ['restaurant', 'food'],
-          locationBias,
+          locationRestriction,
         }
 
         // 使用靜態方法調用
@@ -58,7 +59,7 @@ function usePlaceSearch({ radius = 0.000001 }: Props = {}) {
 
             return {
               place_id: placePrediction?.placeId || '',
-              description: fullText,
+              description: fullText, // mainText + secondaryText
               structured_formatting: {
                 main_text: mainText,
                 secondary_text: secondaryText,
@@ -76,7 +77,7 @@ function usePlaceSearch({ radius = 0.000001 }: Props = {}) {
         setIsLoading(false)
       }
     },
-    [places, center],
+    [places, location],
   )
 
   // 取得地點詳細資訊
@@ -119,7 +120,6 @@ function usePlaceSearch({ radius = 0.000001 }: Props = {}) {
           }
 
           setQuery(place.displayName || place.formattedAddress || '')
-          setSelectedIndex(-1)
           return {
             marker: {
               ...location,
@@ -141,8 +141,6 @@ function usePlaceSearch({ radius = 0.000001 }: Props = {}) {
     setQuery,
     predictions,
     isLoading,
-    selectedIndex,
-    setSelectedIndex,
     getPlacePredictions,
     getPlaceDetails,
     setPredictions,

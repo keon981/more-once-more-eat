@@ -12,13 +12,17 @@ function useDialog({
   const [isOpen, setIsOpen] = useState(false)
   const triggerRef = useRef<HTMLButtonElement>(null)
 
-  function trigger() {
+  const trigger = () => {
     setIsOpen(true)
   }
 
-  function dismiss() {
+  const dismiss = () => {
     setIsOpen(false)
     triggerRef.current?.focus()
+  }
+
+  const toggle = () => {
+    setIsOpen(open => !open)
   }
 
   const handleOpenChange = (open: boolean) => {
@@ -45,6 +49,7 @@ function useDialog({
     },
     trigger,
     dismiss,
+    toggle,
     setIsOpen,
   }
 }
