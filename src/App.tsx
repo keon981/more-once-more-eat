@@ -1,55 +1,67 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
+import { APIProvider as GoogleMapAPIProvider } from '@vis.gl/react-google-maps'
+
+import Turntable from './components/turntable'
+import LiquidGlass from './components/ui/liquid-glass'
+import { Vortex } from './components/ui/vortex'
+import MenuList from './layouts/menu-list'
 import { MenuSidebar } from './layouts/menu-sidebar'
-import GoogleMapComponent from '@/components/maps/GoogleMap'
-import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
-import { defaultCenter, mapApiKey } from '@/utils/map-center'
+import GoogleMapComponent from '@/components/maps/GoogleMap.layout'
+import { SidebarProvider } from '@/components/ui/sidebar'
+import { Tabs, TabsContent } from '@/components/ui/tabs'
+import { useMapStore } from '@/stores/map-store'
+import { mapApiKey } from '@/utils/map-center'
 
 import './App.css'
 
-// Replace with your actual Google Maps API key
-
 function App() {
-  const [markers, setMarkers] = useState<google.maps.LatLngLiteral[]>([defaultCenter])
-
-  const handleMapClick = (event: google.maps.MapMouseEvent) => {
-    if (event.latLng) {
-      const newMarker = {
-        lat: event.latLng.lat(),
-        lng: event.latLng.lng(),
-      }
-      setMarkers([newMarker])
-    }
-  }
+  const { setLocation, location, center } = useMapStore()
 
   useEffect(() => {
     if (!navigator?.geolocation?.getCurrentPosition) return
     navigator.geolocation.getCurrentPosition((pos) => {
-      setMarkers([{
+      setLocation({
         lat: pos.coords.latitude,
         lng: pos.coords.longitude,
-      }])
+      })
     })
   }, [])
 
+  console.log('center', location, center)
+
   return (
-    <SidebarProvider>
-      <div className="flex size-full gap-2 rounded overflow-hidden">
-        <MenuSidebar />
-        <main className="size-full p-2 flex flex-col gap-1 rounded border border-white bg-white/20">
-          <nav className="flex items-center p-1 bg-white/20 rounded">
-            <SidebarTrigger />
-          </nav>
-          <GoogleMapComponent
-            apiKey={mapApiKey}
-            center={defaultCenter}
-            zoom={17}
-            markers={markers}
-            onMapClick={handleMapClick}
-          />
-        </main>
-      </div>
-    </SidebarProvider>
+    <GoogleMapAPIProvider
+      apiKey={mapApiKey}
+      libraries={['places']}
+      language="zh-TW"
+      region="TW"
+    >
+      <SidebarProvider className="p-0">
+        <div className="w-screen max-h-screen p-2 rounded overflow-hidden">
+          <Vortex backgroundColor="black" className="flex size-full">
+            <MenuSidebar />
+            <main className="size-full relative flex flex-col gap-2 rounded">
+              <Tabs defaultValue="map" className="relative size-full">
+                <MenuList />
+                <TabsContent value="map" className="size-full p-1 rounded border-stereoscopic">
+                  <LiquidGlass className="size-full">
+                    <GoogleMapComponent />
+                  </LiquidGlass>
+                </TabsContent>
+                <TabsContent value="turntable" className="size-full p-1 rounded border-stereoscopic">
+                  <LiquidGlass>
+                    <Turntable onResult={option => console.log('選中了:', option.label)} />
+                  </LiquidGlass>
+                </TabsContent>
+              </Tabs>
+
+            </main>
+
+          </Vortex>
+        </div>
+      </SidebarProvider>
+    </GoogleMapAPIProvider>
   )
 }
 
