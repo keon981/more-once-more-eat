@@ -1,5 +1,5 @@
-name: Github Actions Demo
-run-name: Github Actions Demo
+name: Github Actions
+run-name: Github Actions
 
 # 觸發 github aciotn 的時機
 on:
@@ -13,18 +13,20 @@ jobs:
     runs-on: ubuntu-latest # 執行環境 Linux
     steps:
       - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4 # 安裝 pnpm(由於 package.json 裡有設定 packageManager，此處版本為選填)
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-      - run: pnpm install
-      - run: pnpm test
+      - run: pnpm install --no-frozen-lockfile
+      - run: pnpm run test
   build: # 生產機器
     runs-on: ubuntu-latest # 執行環境 Linux
     steps:
       - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-      - run: pnpm install
-      - run: pnpm build
+      - run: pnpm install --no-frozen-lockfile
+      - run: pnpm run build
 
