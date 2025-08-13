@@ -15,6 +15,8 @@ interface TurntableProps {
 const defaultOptions: TurntableOption[] = [
   { id: '1', label: '麥當勞' },
   { id: '2', label: '肯德基' },
+  { id: '3', label: '全家' },
+  { id: '4', label: '7-11' },
 ]
 
 export function Turntable({

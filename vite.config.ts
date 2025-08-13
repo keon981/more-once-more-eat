@@ -32,4 +32,7 @@ export default defineConfig({
     host: '0.0.0.0',
     port: 8080,
   },
+  preview: {
+    port: 3333,
+  },
 })
