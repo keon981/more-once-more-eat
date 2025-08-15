@@ -1,19 +1,56 @@
 import { useEffect } from 'react'
 
 import { APIProvider as GoogleMapAPIProvider } from '@vis.gl/react-google-maps'
+import { ChartArea, MapIcon, PanelLeftIcon } from 'lucide-react'
 
-import Turntable from './components/turntable'
+import { DockIcon } from './components/ui/dock/dock'
 import LiquidGlass from './components/ui/liquid-glass'
 import { Vortex } from './components/ui/vortex'
 import { MenuSidebar } from './layouts/menu-sidebar'
 import Menubar from './layouts/menubar'
+import type { MenubarItem } from './layouts/menubar'
+import RechartsLayout from './layouts/recharts.layout'
+import WheelDialog from './layouts/wheel-dialog'
 import GoogleMapComponent from '@/components/maps/GoogleMap.layout'
-import { SidebarProvider } from '@/components/ui/sidebar'
-import { Tabs, TabsContent } from '@/components/ui/tabs'
+import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
+import { Tabs, TabsContent, TabsTrigger } from '@/components/ui/tabs'
 import { useMapStore } from '@/stores/map-store'
 import { mapApiKey } from '@/utils/map-center'
 
 import './App.css'
+
+const menubarList = [
+  {
+    label: 'sidebar',
+    asChild: true,
+    children: (
+      <SidebarTrigger> <DockIcon>
+        <PanelLeftIcon />
+      </DockIcon>
+      </SidebarTrigger>
+    ),
+  },
+  {
+    label: 'map',
+    children: (
+      <TabsTrigger value="map" className="size-full text-xs rounded-full">
+        <DockIcon><MapIcon /></DockIcon>
+      </TabsTrigger>
+    ),
+  },
+  {
+    label: 'turntable',
+    children: (<WheelDialog />),
+  },
+  {
+    label: 'chart',
+    children: (
+      <TabsTrigger value="chart" className="size-full text-xs rounded-full ">
+        <DockIcon><ChartArea /></DockIcon>
+      </TabsTrigger>
+    ),
+  },
+] satisfies MenubarItem[]
 
 function App() {
   const { setLocation } = useMapStore()
@@ -40,22 +77,25 @@ function App() {
           <Vortex backgroundColor="black" className="flex size-full">
             <MenuSidebar />
             <main className="size-full relative flex flex-col gap-2 rounded">
-              <Tabs defaultValue="map" className="relative size-full">
+              <Tabs defaultValue="chart" className="relative size-full">
+                {/* Map Tab */}
                 <TabsContent value="map" className="size-full p-1 rounded border-stereoscopic">
                   <LiquidGlass className="size-full">
                     <GoogleMapComponent />
                   </LiquidGlass>
                 </TabsContent>
-                <TabsContent value="turntable" className="size-full p-1 rounded border-stereoscopic">
+                {/* Recharts Tab */}
+                <TabsContent value="chart" className="size-full p-1 rounded border-stereoscopic">
                   <LiquidGlass>
-                    <Turntable />
+                    <RechartsLayout />
                   </LiquidGlass>
                 </TabsContent>
-                <Menubar />
+                <Menubar data={menubarList} />
               </Tabs>
             </main>
           </Vortex>
         </div>
+
       </SidebarProvider>
     </GoogleMapAPIProvider>
   )

@@ -226,6 +226,10 @@
     mix-blend-mode: overlay;
     z-index: 2;
   }
+
+  .recharts-cartesian-grid line[stroke='#ccc'] {
+    /* stroke: var(--color-chart-5); */
+  }
 }
 
 @keyframes floatDistort {

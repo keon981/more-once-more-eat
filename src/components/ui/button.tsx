@@ -16,8 +16,8 @@ const buttonVariants = cva(
         full: 'bg-background shadow-sm hover:bg-background/90',
         outline: 'border shadow-xs hover:bg-background  hover:text-accent-foreground',
         text: 'bg-background  shadow-sm hover:bg-background/90',
-        ghost: 'bg-transparent hover:bg-background',
-        link: 'text-background  underline-offset-4 hover:underline',
+        ghost: 'bg-transparent',
+        link: 'text-background  underline-offset-4 underline hover:text-background',
       },
       size: {
         xs: 'h-7 gap-1 px-3 has-[>svg]:px-2.5',
