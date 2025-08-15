@@ -13,7 +13,7 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        solid: 'bg-background shadow-sm hover:bg-background/90',
+        full: 'bg-background shadow-sm hover:bg-background/90',
         outline: 'border shadow-xs hover:bg-background  hover:text-accent-foreground',
         text: 'bg-background  shadow-sm hover:bg-background/90',
         ghost: 'bg-transparent hover:bg-background',
@@ -29,7 +29,7 @@ const buttonVariants = cva(
       },
     },
     defaultVariants: {
-      variant: 'solid',
+      variant: 'full',
       size: 'md',
     },
   },
@@ -53,12 +53,15 @@ function Button({
 }: ButtonProps) {
   const Comp = asChild ? Slot : 'button'
 
+  // Filter out non-DOM props that might be passed from parent components
+  const { isHovered, width, ...domProps } = props as any
+
   return (
     <Comp
       data-slot="button"
       data-color={color}
       className={cn(buttonVariants({ variant, size, className }))}
-      {...props}
+      {...domProps}
     />
   )
 }

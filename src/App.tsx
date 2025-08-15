@@ -5,8 +5,8 @@ import { APIProvider as GoogleMapAPIProvider } from '@vis.gl/react-google-maps'
 import Turntable from './components/turntable'
 import LiquidGlass from './components/ui/liquid-glass'
 import { Vortex } from './components/ui/vortex'
-import MenuList from './layouts/menu-list'
 import { MenuSidebar } from './layouts/menu-sidebar'
+import Menubar from './layouts/menubar'
 import GoogleMapComponent from '@/components/maps/GoogleMap.layout'
 import { SidebarProvider } from '@/components/ui/sidebar'
 import { Tabs, TabsContent } from '@/components/ui/tabs'
@@ -41,7 +41,6 @@ function App() {
             <MenuSidebar />
             <main className="size-full relative flex flex-col gap-2 rounded">
               <Tabs defaultValue="map" className="relative size-full">
-                <MenuList />
                 <TabsContent value="map" className="size-full p-1 rounded border-stereoscopic">
                   <LiquidGlass className="size-full">
                     <GoogleMapComponent />
@@ -49,13 +48,12 @@ function App() {
                 </TabsContent>
                 <TabsContent value="turntable" className="size-full p-1 rounded border-stereoscopic">
                   <LiquidGlass>
-                    <Turntable onResult={option => console.log('選中了:', option.label)} />
+                    <Turntable />
                   </LiquidGlass>
                 </TabsContent>
+                <Menubar />
               </Tabs>
-
             </main>
-
           </Vortex>
         </div>
       </SidebarProvider>
